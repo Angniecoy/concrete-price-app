@@ -8,34 +8,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: MEMPEKATKAN LATAR BELAKANG & KOTAK KONTROL UTAMA ---
+# --- CSS CUSTOM: BACKGROUND GAMBAR BERSIH TANPA KOTAK ---
 st.markdown("""
     <style>
-        /* Lapisan gelap latar belakang dibuat sangat pekat (0.93) agar bersih */
         .stApp {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)), 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                               url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        
-        /* Kotak kartu konten utama agar teks dan input sangat mudah dibaca */
-        .main-card {
-            background-color: rgba(15, 23, 42, 0.92);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
-            margin-bottom: 20px;
-        }
 
         .stTabs [data-baseweb="tab-list"] {
             gap: 10px;
         }
         .stTabs [data-baseweb="tab"] {
-            background-color: rgba(255, 75, 75, 0.2);
+            background-color: rgba(255, 75, 75, 0.15);
             border-radius: 6px;
             padding: 10px 20px;
             font-weight: 600;
@@ -55,7 +44,7 @@ if not st.session_state.authenticated:
     
     col_lock1, col_lock2, col_lock3 = st.columns([1, 1.4, 1])
     with col_lock2:
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
+        # Bagian kotak gelap sudah dibersihkan sepenuhnya di sini
         st.markdown("<h2 style='text-align: center; color: #FFFFFF; margin-bottom: 10px;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; color: #D1D5DB; font-size: 0.9rem; margin-bottom: 20px;'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
         
@@ -67,7 +56,6 @@ if not st.session_state.authenticated:
                 st.rerun()
             else:
                 st.error("❌ Password salah! Silakan coba lagi.")
-        st.markdown('</div>', unsafe_allow_html=True)
     st.stop()
 
 # ==========================================
@@ -83,7 +71,7 @@ with st.sidebar:
 st.markdown("""
     <div style="text-align: center; padding: 10px 0px 20px 0px;">
         <span style="font-size: 1.8rem; vertical-align: middle;">🏗️</span>
-        <span style="font-size: 1.5rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">
+        <span style="font-size: 1.5rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
             KALKULATOR & EVALUASI PENAWARAN PROYEK
         </span>
     </div>
@@ -98,32 +86,30 @@ def parse_num(val, default=0.0):
 
 tab1, tab2 = st.tabs(["📋 Evaluasi Penawaran Proyek", "⚙️ Parameter & Acuan Batching Plant"])
 
-# --- TAB 2: PARAMETER & ACUAN BATCHING PLANT ---
 with tab2:
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
     st.markdown("#### ⚙️ Pengaturan Parameter Acuan Bulanan")
     st.caption("Ubah parameter acuan dasar batching plant di sini jika ada pembaruan berkala.")
     
     t2_col1, t2_col2 = st.columns(2, gap="medium")
     with t2_col1:
-        raw_cap = st.text_input("Kapasitas Produksi [m³] (Kode: a)", value="7.392", key="t2_cap")
+        raw_cap = st.text_input("Kapasitas Produksi [m³] (Kode: a)", value="7.392")
         cap_prod = parse_num(raw_cap, 7392.0)
         st.caption(f"💡 Terbaca: **{cap_prod:,.2f} m³**")
 
-        raw_cogm = st.text_input("Biaya COGM [Rp/m³] (Kode: b)", value="1.095.193", key="t2_cogm")
+        raw_cogm = st.text_input("Biaya COGM [Rp/m³] (Kode: b)", value="1.095.193")
         biaya_cogm = parse_num(raw_cogm, 1095193.0)
         st.caption(f"💡 Terbaca: **Rp {biaya_cogm:,.2f}**")
 
-        raw_upah = st.text_input("Biaya Upah Langsung [Rp/m³] (Kode: c)", value="21.831", key="t2_upah")
+        raw_upah = st.text_input("Biaya Upah Langsung [Rp/m³] (Kode: c)", value="21.831")
         upah_langsung = parse_num(raw_upah, 21831.0)
         st.caption(f"💡 Terbaca: **Rp {upah_langsung:,.2f}**")
 
     with t2_col2:
-        raw_bbm = st.text_input("Biaya BBM Alat [Rp/m³] (Kode: d)", value="111.386", key="t2_bbm")
+        raw_bbm = st.text_input("Biaya BBM Alat [Rp/m³] (Kode: d)", value="111.386")
         bbm_alat = parse_num(raw_bbm, 111386.0)
         st.caption(f"💡 Terbaca: **Rp {bbm_alat:,.2f}**")
 
-        raw_fc = st.text_input("Total Biaya Tetap / Fixed Cost [Rp] (Kode: f)", value="668.523.832", key="t2_fc")
+        raw_fc = st.text_input("Total Biaya Tetap / Fixed Cost [Rp] (Kode: f)", value="668.523.832")
         fixed_cost = parse_num(raw_fc, 668523832.0)
         st.caption(f"💡 Terbaca: **Rp {fixed_cost:,.2f}**")
 
@@ -132,22 +118,19 @@ with tab2:
 
     st.markdown("---")
     st.markdown("##### Hasil Turunan Parameter Acuan:")
-    st.text_input("Biaya Variabel (e = b - c - d) [Rp/m³]", value=f"{e_var:,.2f}", disabled=True, key="t2_e")
+    st.text_input("Biaya Variabel (e = b - c - d) [Rp/m³]", value=f"{e_var:,.2f}", disabled=True)
     st.caption(f"💡 Terbaca: **Rp {e_var:,.2f}** per m³")
 
-    st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"{g_fixed_satuan:,.2f}", disabled=True, key="t2_g")
+    st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"{g_fixed_satuan:,.2f}", disabled=True)
     st.caption(f"💡 Terbaca: **Rp {g_fixed_satuan:,.2f}** per m³")
-    st.markdown('</div>', unsafe_allow_html=True)
 
 e_var = biaya_cogm - upah_langsung - bbm_alat
 g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-# --- TAB 1: EVALUASI PENAWARAN PROYEK ---
 with tab1:
     col1, col2 = st.columns([1, 1], gap="large")
 
     with col1:
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
         st.markdown("#### 📋 Masukkan Parameter Penawaran")
         st.caption("Input data pesanan atau penawaran proyek baru")
         
@@ -159,15 +142,13 @@ with tab1:
         rencana_vol = parse_num(raw_vol, 1000.0)
         st.caption(f"💡 Terbaca: **{rencana_vol:,.2f} m³**")
 
-        mutu_beton = st.text_input("Mutu Beton Rencana", value="K250 Slump 12 ± 2", key="in_mutu")
+        mutu_beton = st.text_input("Mutu Beton Rencana", value="K250 Slump 12 ± 2")
         
         raw_jarak = st.text_input("Jarak Proyek dari Batching Plant [Km]", value="20", key="in_jarak")
         jarak_proyek = parse_num(raw_jarak, 20.0)
         st.caption(f"💡 Terbaca: **{jarak_proyek:,.2f} Km**")
-        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
-        st.markdown('<div class="main-card">', unsafe_allow_html=True)
         st.markdown("#### 📊 Hasil Evaluasi & Kelayakan")
         
         j_margin = harga_jual - e_var
@@ -209,12 +190,11 @@ with tab1:
 
         st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True, key="res_layak")
         st.caption(f"💡 Keputusan: **{status_layak}**")
-        st.markdown('</div>', unsafe_allow_html=True)
 
 # --- FOOTER COPYRIGHT ---
 st.markdown("---")
 st.markdown("""
-    <div style="text-align: center; color: #FFFFFF; font-size: 0.85rem; padding: 10px 0px 20px 0px; text-shadow: 1px 1px 2px rgba(0,0,0,0.9);">
+    <div style="text-align: center; color: #FFFFFF; font-size: 0.85rem; padding: 10px 0px 20px 0px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
         © 2026 PT Waskita Beton Precast Tbk · Kalkulator Pasar Retail Pro v2.1 | Developed By RMQ Division
     </div>
 """, unsafe_allow_html=True)
