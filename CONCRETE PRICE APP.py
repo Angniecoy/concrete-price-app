@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 
 # Konfigurasi Halaman Web
 st.set_page_config(
@@ -12,33 +11,29 @@ st.set_page_config(
 # Judul Utama
 st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 15px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
 
-# --- PANEL ACUAN DI BAGIAN PALING ATAS (KETERANGAN TABEL) ---
-with st.expander("📌 Lihat / Ubah Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
-    ac1, ac2, ac3 = st.columns(3, gap="medium")
+# --- PANEL ACUAN DI BAGIAN ATAS (RINGKAS & TIDAK PANJANG KE BAWAH) ---
+with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
+    ac1, ac2 = st.columns(2, gap="medium")
     with ac1:
-        cap_prod = st.number_input("Kapasitas Produksi (a) [m³]", value=7392.0, step=100.0, format="%.2f")
-        biaya_cogm = st.number_input("Biaya COGM (b) [Rp/m³]", value=1095193.0, step=1000.0, format="%.2f")
+        cap_prod = st.number_input("Kapasitas Produksi [m³] (Kode: a)", value=7392.0, step=100.0, format="%.2f")
+        biaya_cogm = st.number_input("Biaya COGM [Rp/m³] (Kode: b)", value=1095193.0, step=1000.0, format="%.2f")
+        upah_langsung = st.number_input("Biaya Upah Langsung [Rp/m³] (Kode: c)", value=21831.0, step=100.0, format="%.2f")
     with ac2:
-        upah_langsung = st.number_input("Biaya Upah Langsung (c) [Rp/m³]", value=21831.0, step=100.0, format="%.2f")
-        bbm_alat = st.number_input("Biaya BBM Alat (d) [Rp/m³]", value=111386.0, step=100.0, format="%.2f")
-    with ac3:
-        fixed_cost = st.number_input("Total Biaya Tetap / Fixed Cost (f) [Rp]", value=668523832.0, step=1000000.0, format="%.2f")
+        bbm_alat = st.number_input("Biaya BBM Alat [Rp/m³] (Kode: d)", value=111386.0, step=100.0, format="%.2f")
+        fixed_cost = st.number_input("Total Biaya Tetap / Fixed Cost [Rp] (Kode: f)", value=668523832.0, step=1000000.0, format="%.2f")
 
     # Hitungan Parameter Acuan Sesuai Rumus Excel
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-    st.markdown("<br>", unsafe_allow_html=True)
-    tabel_data = pd.DataFrame([
-        {"Uraian": "Kapasitas Produksi", "Sat.": "m³", "Kode": "a", "Nilai": f"{cap_prod:,.2f}"},
-        {"Uraian": "Biaya COGM", "Sat.": "Rp/m³", "Kode": "b", "Nilai": f"Rp {biaya_cogm:,.2f}"},
-        {"Uraian": "Biaya Upah Langsung", "Sat.": "Rp/m³", "Kode": "c", "Nilai": f"Rp {upah_langsung:,.2f}"},
-        {"Uraian": "Biaya BBM Alat", "Sat.": "Rp/m³", "Kode": "d", "Nilai": f"Rp {bbm_alat:,.2f}"},
-        {"Uraian": "Total biaya tetap (fixed cost)", "Sat.": "Rp", "Kode": "f", "Nilai": f"Rp {fixed_cost:,.2f}"},
-        {"Uraian": "Biaya variabel (variable cost)", "Sat.": "Rp/m³", "Kode": "e = b - c - d", "Nilai": f"Rp {e_var:,.2f}"},
-        {"Uraian": "Biaya tetap (fixed cost satuan)", "Sat.": "Rp/m³", "Kode": "g = f / a", "Nilai": f"Rp {g_fixed_satuan:,.2f}"},
-    ])
-    st.table(tabel_data)
+    # Kotak ringkasan hasil hitung acuan
+    st.markdown(f"""
+    <div style="background-color: rgba(255, 75, 75, 0.04); border: 1px solid #ff4b4b; border-radius: 6px; padding: 10px 14px; margin-top: 8px; font-size: 0.9rem;">
+        <b>Hasil Parameter Acuan:</b><br>
+        • Biaya Variabel (e = b - c - d): <b>Rp {e_var:,.2f} /m³</b><br>
+        • Biaya Tetap Satuan (g = f / a): <b>Rp {g_fixed_satuan:,.2f} /m³</b>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("---")
 
