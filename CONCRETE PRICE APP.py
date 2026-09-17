@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 # Konfigurasi Halaman Web
 st.set_page_config(
@@ -9,44 +10,68 @@ st.set_page_config(
 )
 
 # Judul Utama
-st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 20px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 15px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
 
-# --- SIDEBAR: ACUAN BIAYA BATCHING PLANT ---
-with st.sidebar:
-    st.markdown("### ⚙️ Acuan Biaya Batching Plant")
-    st.caption("Parameter bulanan / berjalan")
-    
-    cap_prod = st.number_input("Kapasitas Produksi (a) [m³]", value=7392.0, step=100.0, format="%.2f")
-    biaya_cogm = st.number_input("Biaya COGM (b) [Rp/m³]", value=1095193.0, step=1000.0, format="%.2f")
-    upah_langsung = st.number_input("Biaya Upah Langsung (c) [Rp/m³]", value=21831.0, step=100.0, format="%.2f")
-    bbm_alat = st.number_input("Biaya BBM Alat (d) [Rp/m³]", value=111386.0, step=100.0, format="%.2f")
-    fixed_cost = st.number_input("Total Biaya Tetap / Fixed Cost (f) [Rp]", value=668523832.0, step=1000000.0, format="%.2f")
+# --- PANEL ACUAN DI BAGIAN PALING ATAS (KETERANGAN TABEL) ---
+with st.expander("📌 Lihat / Ubah Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
+    # Form input acuan dalam bentuk kolom agar rapi di HP maupun PC
+    ac1, ac2, ac3 = st.columns(3, gap="medium")
+    with ac1:
+        cap_prod = st.number_input("Kapasitas Produksi (a) [m³]", value=7392.0, step=100.0, format="%.2f")
+        biaya_cogm = st.number_input("Biaya COGM (b) [Rp/m³]", value=1095193.0, step=1000.0, format="%.2f")
+    with ac2:
+        upah_langsung = st.number_input("Biaya Upah Langsung (c) [Rp/m³]", value=21831.0, step=100.0, format="%.2f")
+        bbm_alat = st.number_input("Biaya BBM Alat (d) [Rp/m³]", value=111386.0, step=100.0, format="%.2f")
+    with ac3:
+        fixed_cost = st.number_input("Total Biaya Tetap / Fixed Cost (f) [Rp]", value=668523832.0, step=1000000.0, format="%.2f")
 
+    # Hitungan Parameter Acuan Sesuai Rumus Excel
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-    st.markdown("---")
-    st.markdown(f"**Biaya Variabel (e):** `Rp {e_var:,.2f} /m³`")
-    st.markdown(f"**Biaya Tetap Satuan (g):** `Rp {g_fixed_satuan:,.2f} /m³`")
+    # Menampilkan Tabel Keterangan Persis Seperti Gambar Anda
+    st.markdown("<br>", unsafe_allow_html=True)
+    tabel_data = pd.DataFrame([
+        {"Uraian": "Kapasitas Produksi", "Sat.": "m³", "Kode": "a", "Nilai": f"{cap_prod:,.2f}"},
+        {"Uraian": "Biaya COGM", "Sat.": "Rp/m³", "Kode": "b", "Nilai": f"Rp {biaya_cogm:,.2f}"},
+        {"Uraian": "Biaya Upah Langsung", "Sat.": "Rp/m³", "Kode": "c", "Nilai": f"Rp {upah_langsung:,.2f}"},
+        {"Uraian": "Biaya BBM Alat", "Sat.": "Rp/m³", "Kode": "d", "Nilai": f"Rp {bbm_alat:,.2f}"},
+        {"Uraian": "Total biaya tetap (fixed cost)", "Sat.": "Rp", "Kode": "f", "Nilai": f"Rp {fixed_cost:,.2f}"},
+        {"Uraian": "Biaya variabel (variable cost)", "Sat.": "Rp/m³", "Kode": "e = b - c - d", "Nilai": f"Rp {e_var:,.2f}"},
+        {"Uraian": "Biaya tetap (fixed cost satuan)", "Sat.": "Rp/m³", "Kode": "g = f / a", "Nilai": f"Rp {g_fixed_satuan:,.2f}"},
+    ])
+    st.table(tabel_data)
 
-# --- HALAMAN UTAMA ---
+st.markdown("---")
+
+# --- HALAMAN UTAMA: CEK PENAWARAN & EVALUASI ---
 col1, col2 = st.columns([1, 1], gap="medium")
 
 with col1:
     st.markdown("### 📋 Cek Penawaran Proyek")
     st.caption("Masukkan parameter order/penawaran baru")
     
-    # Input dengan penampil format ribuan agar tidak salah input
-    harga_jual = st.number_input("Harga Jual (h) [Rp/m³]", value=1300000.0, step=10000.0, format="%.2f")
-    st.caption(f"💡 Terbaca: **Rp {harga_jual:,.2f}** per m³")
+    raw_harga = st.text_input("Harga Jual (h) [Rp/m³]", value="1.300.000")
+    try:
+        harga_jual = float(raw_harga.replace(".", "").replace(",", ""))
+        st.caption(f"✅ Terbaca: Rp {harga_jual:,.2f}")
+    except:
+        harga_jual = 1300000.0
 
-    rencana_vol = st.number_input("Rencana Volume (i) [m³]", value=1000.0, step=10.0, format="%.2f")
-    st.caption(f"💡 Terbaca: **{rencana_vol:,.2f} m³**")
+    raw_vol = st.text_input("Rencana Volume (i) [m³]", value="1.000")
+    try:
+        rencana_vol = float(raw_vol.replace(".", "").replace(",", ""))
+        st.caption(f"✅ Terbaca: {rencana_vol:,.2f} m³")
+    except:
+        rencana_vol = 1000.0
 
     mutu_beton = st.text_input("Mutu Beton Rencana", value="K250 Slump 12 ± 2")
     
-    jarak_proyek = st.number_input("Jarak Proyek dari Batching Plant [Km]", value=20.0, step=1.0)
-    st.caption(f"💡 Terbaca: **{jarak_proyek:,.2f} Km**")
+    raw_jarak = st.text_input("Jarak Proyek dari Batching Plant [Km]", value="20")
+    try:
+        jarak_proyek = float(raw_jarak.replace(".", "").replace(",", ""))
+    except:
+        jarak_proyek = 20.0
 
 with col2:
     st.markdown("### 📊 Hasil Evaluasi & Kelayakan")
@@ -60,7 +85,6 @@ with col2:
     n_laba_prop = m_total_margin - k_proporsional
     estimasi_laba_bp = m_total_margin - fixed_cost
 
-    # Status Kelayakan Sesuai Logika Excel
     if j_margin > 0:
         if n_laba_prop < 0:
             status_layak = "🟡 Layak (Bantu Tutup Biaya Tetap)"
@@ -95,7 +119,7 @@ with col2:
 
 st.markdown("---")
 
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (HIDDEN / EXPANDER) ---
+# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (EXPANDER) ---
 bep_rupiah = l_bep_vol * harga_jual           
 tot_biaya_var = e_var * l_bep_vol             
 tot_biaya = tot_biaya_var + fixed_cost        
