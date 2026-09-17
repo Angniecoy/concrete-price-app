@@ -19,7 +19,7 @@ def parse_num(val, default=0.0):
     except:
         return default
 
-# --- PANEL ACUAN DI BAGIAN ATAS DENGAN KETERANGAN DI BAWAH MASING-MASING INPUT ---
+# --- PANEL ACUAN DI BAGIAN ATAS (BERJAJAR KEBAWAH TANPA KOTAK TERPISAH) ---
 with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
     ac1, ac2 = st.columns(2, gap="medium")
     with ac1:
@@ -48,13 +48,9 @@ with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-    st.markdown(f"""
-    <div style="background-color: rgba(255, 75, 75, 0.04); border: 1px solid #ff4b4b; border-radius: 6px; padding: 10px 14px; margin-top: 8px; font-size: 0.9rem;">
-        <b>Hasil Parameter Acuan:</b><br>
-        • Biaya Variabel (e = b - c - d): <b>Rp {e_var:,.2f} /m³</b><br>
-        • Biaya Tetap Satuan (g = f / a): <b>Rp {g_fixed_satuan:,.2f} /m³</b>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown(f"• **Biaya Variabel (e = b - c - d):** Rp {e_var:,.2f} /m³")
+    st.markdown(f"• **Biaya Tetap Satuan (g = f / a):** Rp {g_fixed_satuan:,.2f} /m³")
 
 st.markdown("---")
 
