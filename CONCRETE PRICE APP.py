@@ -8,12 +8,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS UNIVERSAL: WARNA FONT PUTIH MUTLAK & KONTRAS TINGGI ---
+# --- CSS CUSTOM: BACKGROUND KEMBALI KE SEMULA (TRANSPARANSI STANDAR) ---
 st.markdown("""
     <style>
-        /* Background gelap pekat agar teks putih menonjol */
         .stApp {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                               url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
             background-size: cover;
             background-position: center;
@@ -31,7 +30,7 @@ st.markdown("""
             gap: 10px;
         }
         .stTabs [data-baseweb="tab"] {
-            background-color: rgba(255, 75, 75, 0.25);
+            background-color: rgba(255, 75, 75, 0.15);
             border-radius: 6px;
             padding: 10px 20px;
             font-weight: 600;
