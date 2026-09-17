@@ -8,11 +8,12 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: BACKGROUND DIPERGELAP AGAR TULISAN SANGAT JELAS ---
+# --- CSS UNIVERSAL: KONTRAS TINGGI & TEXT SHADOW UNTUK SEMUA LAYAR HP ---
 st.markdown("""
     <style>
+        /* Background gelap pekat agar teks menonjol */
         .stApp {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.92)), 
                               url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
             background-size: cover;
             background-position: center;
@@ -20,11 +21,16 @@ st.markdown("""
             background-attachment: fixed;
         }
 
+        /* Memaksa seluruh teks label dan input agar memiliki bayangan kontras tajam di HP apapun */
+        label, .stMarkdown p, .stCaption, span {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95);
+        }
+
         .stTabs [data-baseweb="tab-list"] {
             gap: 10px;
         }
         .stTabs [data-baseweb="tab"] {
-            background-color: rgba(255, 75, 75, 0.15);
+            background-color: rgba(255, 75, 75, 0.25);
             border-radius: 6px;
             padding: 10px 20px;
             font-weight: 600;
@@ -44,8 +50,8 @@ if not st.session_state.authenticated:
     
     col_lock1, col_lock2, col_lock3 = st.columns([1, 1.4, 1])
     with col_lock2:
-        st.markdown("<h2 style='text-align: center; color: #FFFFFF; margin-bottom: 10px;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; color: #D1D5DB; font-size: 0.9rem; margin-bottom: 20px;'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: #FFFFFF; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; color: #F3F4F6; font-size: 0.9rem; margin-bottom: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.9);'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
         
         input_pass = st.text_input("Password", type="password", placeholder="Masukkan password...")
         
@@ -70,7 +76,7 @@ with st.sidebar:
 st.markdown("""
     <div style="text-align: center; padding: 10px 0px 20px 0px;">
         <span style="font-size: 1.8rem; vertical-align: middle;">🏗️</span>
-        <span style="font-size: 1.5rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+        <span style="font-size: 1.5rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.9);">
             KALKULATOR & EVALUASI PENAWARAN PROYEK
         </span>
     </div>
@@ -193,7 +199,7 @@ with tab1:
 # --- FOOTER COPYRIGHT ---
 st.markdown("---")
 st.markdown("""
-    <div style="text-align: center; color: #FFFFFF; font-size: 0.85rem; padding: 10px 0px 20px 0px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
+    <div style="text-align: center; color: #FFFFFF; font-size: 0.85rem; padding: 10px 0px 20px 0px; text-shadow: 1px 1px 3px rgba(0,0,0,0.9);">
         © 2026 PT Waskita Beton Precast Tbk · Kalkulator Pasar Retail Pro v2.1 | Developed By RMQ Division
     </div>
 """, unsafe_allow_html=True)
