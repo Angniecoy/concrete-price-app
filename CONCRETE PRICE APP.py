@@ -5,10 +5,10 @@ st.set_page_config(
     page_title="Kalkulator Pasar Retail Pro",
     page_icon="🏗️",
     layout="wide",
-    initial_sidebar_state="collapsed"  # Sidebar otomatis tertutup di HP agar layar utama lebih lega
+    initial_sidebar_state="collapsed"
 )
 
-# Judul Utama yang responsif
+# Judul Utama
 st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 20px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
 
 # --- SIDEBAR: ACUAN BIAYA BATCHING PLANT ---
@@ -31,7 +31,6 @@ with st.sidebar:
     st.markdown(f"**Biaya Tetap Satuan (g):** `Rp {g_fixed_satuan:,.2f} /m³`")
 
 # --- HALAMAN UTAMA ---
-# Di HP, Streamlit otomatis menyusun kolom ini dari kiri ke kanan lalu menumpuk ke bawah
 col1, col2 = st.columns([1, 1], gap="medium")
 
 with col1:
@@ -64,7 +63,6 @@ with col2:
     else:
         status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-    # Tampilan Ringkas & Nyaman Dibaca di HP
     st.markdown(f"""
     - **Margin Kontribusi (j):** `Rp {j_margin:,.2f} /m³`
     - **Beban Tetap Proporsional (k):** `Rp {k_proporsional:,.2f}`
@@ -79,7 +77,7 @@ with col2:
 
 st.markdown("---")
 
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR ---
+# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (PROPORSIONAL & RAPAT) ---
 st.markdown("### 🧮 Rekapitulasi Finansial Akhir")
 
 bep_rupiah = l_bep_vol * harga_jual           
@@ -87,11 +85,14 @@ tot_biaya_var = e_var * l_bep_vol
 tot_biaya = tot_biaya_var + fixed_cost        
 cek_nol = tot_biaya - bep_rupiah              
 
-# Menggunakan 2 kolom di HP agar metrik rekap tidak terlalu padat ke samping
-rcol1, rcol2 = st.columns(2)
-with rcol1:
-    st.metric("BEP Rupiah", f"Rp {bep_rupiah:,.0f}")
-    st.metric("Total Biaya Variabel", f"Rp {tot_biaya_var:,.0f}")
-with rcol2:
-    st.metric("Total Biaya", f"Rp {tot_biaya:,.0f}")
-    st.metric("Cek Harus 0", f"Rp {cek_nol:,.2f}")
+# Menggunakan container card agar rapi dan proporsional normal
+with st.container():
+    rcol1, rcol2 = st.columns(2, gap="large")
+    with rcol1:
+        st.markdown(f"**BEP Rupiah**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {bep_rupiah:,.2f}</span>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
+        st.markdown(f"**Total Biaya Variabel**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {tot_biaya_var:,.2f}</span>", unsafe_allow_html=True)
+    with rcol2:
+        st.markdown(f"**Total Biaya**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {tot_biaya:,.2f}</span>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
+        st.markdown(f"**Cek Harus 0**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {cek_nol:,.2f}</span>", unsafe_allow_html=True)
