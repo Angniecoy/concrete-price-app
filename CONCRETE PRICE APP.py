@@ -8,11 +8,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: BACKGROUND GAMBAR & KOTAK LOGIN BERSIH TANPA BINGKAI ---
+# --- CSS CUSTOM: BACKGROUND GAMBAR & KOTAK LOGIN POSISI PAS ---
 st.markdown("""
     <style>
         .stApp {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                               url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
             background-size: cover;
             background-position: center;
@@ -21,11 +21,11 @@ st.markdown("""
         }
         
         .login-card {
-            background-color: rgba(15, 23, 42, 0.92);
-            padding: 30px;
-            border-radius: 12px;
+            background-color: rgba(15, 23, 42, 0.95);
+            padding: 35px;
+            border-radius: 14px;
             border: none;
-            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.7);
         }
 
         .stTabs [data-baseweb="tab-list"] {
@@ -48,12 +48,14 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    col_lock1, col_lock2, col_lock3 = st.columns([1, 1.3, 1])
+    # Jarak ditambahkan agar posisi kotak login turun ke bawah dan tidak menutupi teks gambar
+    st.markdown("<br><br><br><br>", unsafe_allow_html=True)
+    
+    col_lock1, col_lock2, col_lock3 = st.columns([1, 1.4, 1])
     with col_lock2:
         st.markdown('<div class="login-card">', unsafe_allow_html=True)
-        st.markdown("<h2 style='text-align: center; color: #FFFFFF;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; color: #D1D5DB; font-size: 0.9rem;'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: #FFFFFF; margin-bottom: 10px;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; color: #D1D5DB; font-size: 0.9rem; margin-bottom: 20px;'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
         
         input_pass = st.text_input("Password", type="password", placeholder="Masukkan password...")
         
