@@ -8,10 +8,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: BACKGROUND GAMBAR & KOTAK LOGIN TRANSPARAN ---
+# --- CSS CUSTOM: BACKGROUND GAMBAR & KOTAK LOGIN BERSIH TANPA BINGKAI ---
 st.markdown("""
     <style>
-        /* Menggunakan file BG APP.jpeg yang sudah di-upload */
         .stApp {
             background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
                               url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
@@ -21,13 +20,12 @@ st.markdown("""
             background-attachment: fixed;
         }
         
-        /* Mempercantik Kotak Login agar kontras di atas background */
         .login-card {
-            background-color: rgba(15, 23, 42, 0.85);
+            background-color: rgba(15, 23, 42, 0.92);
             padding: 30px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 75, 75, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: none;
+            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.6);
         }
 
         .stTabs [data-baseweb="tab-list"] {
