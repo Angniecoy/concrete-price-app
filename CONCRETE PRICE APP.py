@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS untuk mempercantik tampilan tab dan kontras warna
+# Custom CSS untuk mempercantik tampilan tab, kontras warna, dan footer copyright
 st.markdown("""
     <style>
         .stTabs [data-baseweb="tab-list"] {
@@ -155,3 +155,11 @@ with tab1:
 
         st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True, key="res_layak")
         st.caption(f"💡 Keputusan: **{status_layak}**")
+
+# --- FOOTER COPYRIGHT (BAGIAN BAWAH APLIKASI) ---
+st.markdown("---")
+st.markdown("""
+    <div style="text-align: center; color: #9CA3AF; font-size: 0.85rem; padding: 10px 0px 20px 0px;">
+        Developed By RMQ Division
+    </div>
+""", unsafe_allow_html=True)
