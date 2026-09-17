@@ -160,6 +160,6 @@ with tab1:
 st.markdown("---")
 st.markdown("""
     <div style="text-align: center; color: #9CA3AF; font-size: 0.85rem; padding: 10px 0px 20px 0px;">
-        Developed By RMQ Division
+        © 2026 PT Waskita Beton Precast Tbk · Kalkulator Pasar Retail Pro v2.1 | Developed By RMQ Division
     </div>
 """, unsafe_allow_html=True)
