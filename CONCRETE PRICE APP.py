@@ -8,14 +8,14 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS untuk mempercantik tampilan kotak & tab
+# Custom CSS untuk mempercantik tampilan tab dan kontras warna
 st.markdown("""
     <style>
         .stTabs [data-baseweb="tab-list"] {
             gap: 10px;
         }
         .stTabs [data-baseweb="tab"] {
-            background-color: rgba(255, 75, 75, 0.05);
+            background-color: rgba(255, 75, 75, 0.08);
             border-radius: 6px;
             padding: 10px 20px;
             font-weight: 600;
@@ -23,8 +23,15 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Judul Utama
-st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 20px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
+# Judul Utama yang Lebih Terang, Kontras, dan Elegan di Layar Gelap
+st.markdown("""
+    <div style="text-align: center; padding: 10px 0px 20px 0px;">
+        <span style="font-size: 1.8rem; vertical-align: middle;">🏗️</span>
+        <span style="font-size: 1.5rem; font-weight: 700; color: #F3F4F6; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px;">
+            KALKULATOR & EVALUASI PENAWARAN PROYEK
+        </span>
+    </div>
+""", unsafe_allow_html=True)
 
 # Helper untuk membersihkan input string berformat ke float
 def parse_num(val, default=0.0):
@@ -37,7 +44,7 @@ def parse_num(val, default=0.0):
 # --- MEMBUAT NAVIGASI TAB UTAMA ---
 tab1, tab2 = st.tabs(["📋 Evaluasi Penawaran Proyek", "⚙️ Parameter & Acuan Batching Plant"])
 
-# --- TAB 2: PARAMETER & ACUAN BATCHING PLANT (DIPINDAH KE TAB KHUSUS AGAR RAPI) ---
+# --- TAB 2: PARAMETER & ACUAN BATCHING PLANT ---
 with tab2:
     st.markdown("#### ⚙️ Pengaturan Parameter Acuan Bulanan")
     st.caption("Ubah parameter acuan dasar batching plant di sini jika ada pembaruan berkala.")
@@ -116,7 +123,7 @@ with tab1:
         n_laba_prop = m_total_margin - k_proporsional
         estimasi_laba_bp = m_total_margin - fixed_cost
 
-        # Status Kelayakan & Warna Dinamis
+        # Status Kelayakan
         if j_margin > 0:
             if n_laba_prop < 0:
                 status_layak = "🟡 Layak (Bantu Tutup Biaya Tetap)"
