@@ -8,11 +8,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: BACKGROUND GAMBAR BERSIH TANPA KOTAK ---
+# --- CSS CUSTOM: BACKGROUND DIPERGELAP AGAR TULISAN SANGAT JELAS ---
 st.markdown("""
     <style>
         .stApp {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+            background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), 
                               url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
             background-size: cover;
             background-position: center;
@@ -44,7 +44,6 @@ if not st.session_state.authenticated:
     
     col_lock1, col_lock2, col_lock3 = st.columns([1, 1.4, 1])
     with col_lock2:
-        # Bagian kotak gelap sudah dibersihkan sepenuhnya di sini
         st.markdown("<h2 style='text-align: center; color: #FFFFFF; margin-bottom: 10px;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; color: #D1D5DB; font-size: 0.9rem; margin-bottom: 20px;'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
         
