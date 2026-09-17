@@ -4,11 +4,12 @@ import streamlit as st
 st.set_page_config(
     page_title="Kalkulator Pasar Retail Pro",
     page_icon="🏗️",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"  # Sidebar otomatis tertutup di HP agar layar utama lebih lega
 )
 
-# Judul Utama
-st.markdown("<h2 style='text-align: center; color: #1E3A8A; margin-bottom: 25px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h2>", unsafe_allow_html=True)
+# Judul Utama yang responsif
+st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 20px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
 
 # --- SIDEBAR: ACUAN BIAYA BATCHING PLANT ---
 with st.sidebar:
@@ -29,11 +30,12 @@ with st.sidebar:
     st.markdown(f"**Biaya Variabel (e):** `Rp {e_var:,.2f} /m³`")
     st.markdown(f"**Biaya Tetap Satuan (g):** `Rp {g_fixed_satuan:,.2f} /m³`")
 
-# --- HALAMAN UTAMA: 2 KOLOM (INPUT PROYEK & HASIL EVALUASI) ---
-col1, col2 = st.columns([1, 1.2], gap="large")
+# --- HALAMAN UTAMA ---
+# Di HP, Streamlit otomatis menyusun kolom ini dari kiri ke kanan lalu menumpuk ke bawah
+col1, col2 = st.columns([1, 1], gap="medium")
 
 with col1:
-    st.markdown("### 📋 2. Cek Penawaran Proyek")
+    st.markdown("### 📋 Cek Penawaran Proyek")
     st.caption("Masukkan parameter order/penawaran baru")
     
     harga_jual = st.number_input("Harga Jual (h) [Rp/m³]", value=1300000.0, step=10000.0, format="%.2f")
@@ -42,7 +44,7 @@ with col1:
     jarak_proyek = st.number_input("Jarak Proyek dari Batching Plant [Km]", value=20.0, step=1.0)
 
 with col2:
-    st.markdown("### 📊 3. Hasil Evaluasi & Kelayakan Proyek")
+    st.markdown("### 📊 Hasil Evaluasi & Kelayakan")
     
     # Perhitungan Formula Excel 100% Presisi
     j_margin = harga_jual - e_var
@@ -62,31 +64,34 @@ with col2:
     else:
         status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-    # Tampilan Hasil Ringkas & Rapi
+    # Tampilan Ringkas & Nyaman Dibaca di HP
     st.markdown(f"""
-    - **Margin Kontribusi (j = h - e):** `Rp {j_margin:,.2f} /m³`
+    - **Margin Kontribusi (j):** `Rp {j_margin:,.2f} /m³`
     - **Beban Tetap Proporsional (k):** `Rp {k_proporsional:,.2f}`
-    - **BEP Volume (l = f / j):** `{l_bep_vol:,.2f} m³`
+    - **BEP Volume (l):** `{l_bep_vol:,.2f} m³`
     - **Status Target Volume:** `{status_vol}`
     - **Total Margin Kontribusi (m):** `Rp {m_total_margin:,.2f}`
     - **Laba Operasi Proporsional (n):** `Rp {n_laba_prop:,.2f}`
     - **Estimasi Laba Operasi BP:** `Rp {estimasi_laba_bp:,.2f}`
     """)
 
-    st.markdown(f"#### Status: {status_layak}")
+    st.markdown(f"**Status Kelayakan:** {status_layak}")
 
 st.markdown("---")
 
 # --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR ---
-st.markdown("### 🧮 4. Rekapitulasi Finansial Akhir")
+st.markdown("### 🧮 Rekapitulasi Finansial Akhir")
 
 bep_rupiah = l_bep_vol * harga_jual           
 tot_biaya_var = e_var * l_bep_vol             
 tot_biaya = tot_biaya_var + fixed_cost        
 cek_nol = tot_biaya - bep_rupiah              
 
-rcol1, rcol2, rcol3, rcol4 = st.columns(4)
-rcol1.metric("BEP Rupiah", f"Rp {bep_rupiah:,.0f}")
-rcol2.metric("Total Biaya Variabel", f"Rp {tot_biaya_var:,.0f}")
-rcol3.metric("Total Biaya", f"Rp {tot_biaya:,.0f}")
-rcol4.metric("Cek Harus 0", f"Rp {cek_nol:,.2f}")
+# Menggunakan 2 kolom di HP agar metrik rekap tidak terlalu padat ke samping
+rcol1, rcol2 = st.columns(2)
+with rcol1:
+    st.metric("BEP Rupiah", f"Rp {bep_rupiah:,.0f}")
+    st.metric("Total Biaya Variabel", f"Rp {tot_biaya_var:,.0f}")
+with rcol2:
+    st.metric("Total Biaya", f"Rp {tot_biaya:,.0f}")
+    st.metric("Cek Harus 0", f"Rp {cek_nol:,.2f}")
