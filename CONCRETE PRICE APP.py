@@ -90,15 +90,14 @@ with col2:
 
 st.markdown("---")
 
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR ---
-st.markdown("### 🧮 Rekapitulasi Finansial Akhir")
-
+# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (MENGGUNAKAN TOMBOL KLIK / EXPANDER) ---
 bep_rupiah = l_bep_vol * harga_jual           
 tot_biaya_var = e_var * l_bep_vol             
 tot_biaya = tot_biaya_var + fixed_cost        
 cek_nol = tot_biaya - bep_rupiah              
 
-render_box("BEP Rupiah (f = BEP Vol * Harga Jual):", f"Rp {bep_rupiah:,.2f}")
-render_box("Total Biaya Variabel (g = Biaya Var * BEP Vol):", f"Rp {tot_biaya_var:,.2f}")
-render_box("Total Biaya (h = Total Biaya Variabel + Fixed Cost):", f"Rp {tot_biaya:,.2f}")
-render_box("Cek Harus 0 (i = f - h):", f"Rp {cek_nol:,.2f}")
+with st.expander("🧮 Klik untuk Melihat Rekapitulasi Finansial Akhir"):
+    render_box("BEP Rupiah:", f"Rp {bep_rupiah:,.2f}")
+    render_box("Total Biaya Variabel:", f"Rp {tot_biaya_var:,.2f}")
+    render_box("Total Biaya:", f"Rp {tot_biaya:,.2f}")
+    render_box("Cek Harus 0:", f"Rp {cek_nol:,.2f}")
