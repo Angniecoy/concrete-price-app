@@ -22,7 +22,6 @@ with st.sidebar:
     bbm_alat = st.number_input("Biaya BBM Alat (d) [Rp/m³]", value=111386.0, step=100.0, format="%.2f")
     fixed_cost = st.number_input("Total Biaya Tetap / Fixed Cost (f) [Rp]", value=668523832.0, step=1000000.0, format="%.2f")
 
-    # Hitungan Parameter Acuan
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
@@ -37,10 +36,17 @@ with col1:
     st.markdown("### 📋 Cek Penawaran Proyek")
     st.caption("Masukkan parameter order/penawaran baru")
     
+    # Input dengan penampil format ribuan agar tidak salah input
     harga_jual = st.number_input("Harga Jual (h) [Rp/m³]", value=1300000.0, step=10000.0, format="%.2f")
+    st.caption(f"💡 Terbaca: **Rp {harga_jual:,.2f}** per m³")
+
     rencana_vol = st.number_input("Rencana Volume (i) [m³]", value=1000.0, step=10.0, format="%.2f")
+    st.caption(f"💡 Terbaca: **{rencana_vol:,.2f} m³**")
+
     mutu_beton = st.text_input("Mutu Beton Rencana", value="K250 Slump 12 ± 2")
+    
     jarak_proyek = st.number_input("Jarak Proyek dari Batching Plant [Km]", value=20.0, step=1.0)
+    st.caption(f"💡 Terbaca: **{jarak_proyek:,.2f} Km**")
 
 with col2:
     st.markdown("### 📊 Hasil Evaluasi & Kelayakan")
@@ -63,7 +69,6 @@ with col2:
     else:
         status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-    # Helper function untuk membuat kotak nilai (rectangle merah tipis)
     def render_box(title, value):
         st.markdown(f"""
         <div style="margin-bottom: 8px;">
@@ -90,7 +95,7 @@ with col2:
 
 st.markdown("---")
 
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (MENGGUNAKAN TOMBOL KLIK / EXPANDER) ---
+# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (HIDDEN / EXPANDER) ---
 bep_rupiah = l_bep_vol * harga_jual           
 tot_biaya_var = e_var * l_bep_vol             
 tot_biaya = tot_biaya_var + fixed_cost        
