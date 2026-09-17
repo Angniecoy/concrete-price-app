@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: BACKGROUND KEMBALI KE SEMULA (TRANSPARANSI STANDAR) ---
+# --- CSS CUSTOM: BACKGROUND & KONSISTENSI FONT PUTIH ---
 st.markdown("""
     <style>
         .stApp {
@@ -20,7 +20,6 @@ st.markdown("""
             background-attachment: fixed;
         }
 
-        /* Memaksa seluruh teks, label, header, caption, dan keterangan menjadi putih mutlak */
         h1, h2, h3, h4, h5, h6, label, p, span, .stCaption {
             color: #FFFFFF !important;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95);
@@ -89,9 +88,11 @@ def parse_num(val, default=0.0):
     except:
         return default
 
-tab1, tab2 = st.tabs(["📋 Evaluasi Penawaran Proyek", "⚙️ Parameter & Acuan Batching Plant"])
+# --- MEMBUAT NAVIGASI TAB (PARAMETER DI KIRI, EVALUASI DI KANAN) ---
+tab1, tab2 = st.tabs(["⚙️ Parameter & Acuan Batching Plant", "📋 Evaluasi Penawaran Proyek"])
 
-with tab2:
+# --- TAB 1: PARAMETER & ACUAN BATCHING PLANT (DI SEBELAH KIRI) ---
+with tab1:
     st.markdown("#### ⚙️ Pengaturan Parameter Acuan Bulanan")
     st.caption("Ubah parameter acuan dasar batching plant di sini jika ada pembaruan berkala.")
     
@@ -129,10 +130,12 @@ with tab2:
     st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"{g_fixed_satuan:,.2f}", disabled=True)
     st.caption(f"💡 Terbaca: **Rp {g_fixed_satuan:,.2f}** per m³")
 
+# Hitung nilai acuan untuk digunakan di Tab Evaluasi
 e_var = biaya_cogm - upah_langsung - bbm_alat
 g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-with tab1:
+# --- TAB 2: EVALUASI PENAWARAN PROYEK (DI SEBELAH KANAN) ---
+with tab2:
     col1, col2 = st.columns([1, 1], gap="large")
 
     with col1:
