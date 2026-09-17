@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS CUSTOM: BACKGROUND & KONSISTENSI FONT PUTIH ---
+# --- CSS UNIVERSAL: KONSISTENSI FONT PUTIH & TAMPILAN TAJAM ---
 st.markdown("""
     <style>
         .stApp {
@@ -88,10 +88,10 @@ def parse_num(val, default=0.0):
     except:
         return default
 
-# --- MEMBUAT NAVIGASI TAB (PARAMETER DI KIRI, EVALUASI DI KANAN) ---
+# --- NAVIGASI TAB (PARAMETER DI KIRI, EVALUASI DI KANAN) ---
 tab1, tab2 = st.tabs(["⚙️ Parameter & Acuan Batching Plant", "📋 Evaluasi Penawaran Proyek"])
 
-# --- TAB 1: PARAMETER & ACUAN BATCHING PLANT (DI SEBELAH KIRI) ---
+# --- TAB 1: PARAMETER & ACUAN BATCHING PLANT ---
 with tab1:
     st.markdown("#### ⚙️ Pengaturan Parameter Acuan Bulanan")
     st.caption("Ubah parameter acuan dasar batching plant di sini jika ada pembaruan berkala.")
@@ -130,11 +130,11 @@ with tab1:
     st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"{g_fixed_satuan:,.2f}", disabled=True)
     st.caption(f"💡 Terbaca: **Rp {g_fixed_satuan:,.2f}** per m³")
 
-# Hitung nilai acuan untuk digunakan di Tab Evaluasi
+# Kalkulasi acuan untuk Tab Evaluasi
 e_var = biaya_cogm - upah_langsung - bbm_alat
 g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-# --- TAB 2: EVALUASI PENAWARAN PROYEK (DI SEBELAH KANAN) ---
+# --- TAB 2: EVALUASI PENAWARAN PROYEK ---
 with tab2:
     col1, col2 = st.columns([1, 1], gap="large")
 
@@ -175,28 +175,29 @@ with tab2:
         else:
             status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-        st.text_input("Margin Kontribusi (j = h - e) [Rp/m³]", value=f"{j_margin:,.2f}", disabled=True, key="res_j")
+        # Key dihapus pada hasil kalkulasi agar nilai selalu sinkron secara real-time
+        st.text_input("Margin Kontribusi (j = h - e) [Rp/m³]", value=f"{j_margin:,.2f}", disabled=True)
         st.caption(f"💡 Terbaca: **Rp {j_margin:,.2f}** per m³")
 
-        st.text_input("Beban Biaya Tetap Proporsional (k = (f/a)*i) [Rp]", value=f"{k_proporsional:,.2f}", disabled=True, key="res_k")
+        st.text_input("Beban Biaya Tetap Proporsional (k = (f/a)*i) [Rp]", value=f"{k_proporsional:,.2f}", disabled=True)
         st.caption(f"💡 Terbaca: **Rp {k_proporsional:,.2f}**")
 
-        st.text_input("BEP Volume (l = f / j) [m³]", value=f"{l_bep_vol:,.2f}", disabled=True, key="res_l")
+        st.text_input("BEP Volume (l = f / j) [m³]", value=f"{l_bep_vol:,.2f}", disabled=True)
         st.caption(f"💡 Terbaca: **{l_bep_vol:,.2f} m³**")
 
-        st.text_input("Status Target Volume Proyek", value=status_vol, disabled=True, key="res_svol")
+        st.text_input("Status Target Volume Proyek", value=status_vol, disabled=True)
         st.caption(f"💡 Status: **{status_vol}**")
 
-        st.text_input("Total Margin Kontribusi (m = i * j) [Rp]", value=f"{m_total_margin:,.2f}", disabled=True, key="res_m")
+        st.text_input("Total Margin Kontribusi (m = i * j) [Rp]", value=f"{m_total_margin:,.2f}", disabled=True)
         st.caption(f"💡 Terbaca: **Rp {m_total_margin:,.2f}**")
 
-        st.text_input("Laba Operasi Proporsional Proyek (n = m - k) [Rp]", value=f"{n_laba_prop:,.2f}", disabled=True, key="res_n")
+        st.text_input("Laba Operasi Proporsional Proyek (n = m - k) [Rp]", value=f"{n_laba_prop:,.2f}", disabled=True)
         st.caption(f"💡 Terbaca: **Rp {n_laba_prop:,.2f}**")
 
-        st.text_input("Estimasi Laba Operasi Batching Plant (m - f) [Rp]", value=f"{estimasi_laba_bp:,.2f}", disabled=True, key="res_bp")
+        st.text_input("Estimasi Laba Operasi Batching Plant (m - f) [Rp]", value=f"{estimasi_laba_bp:,.2f}", disabled=True)
         st.caption(f"💡 Terbaca: **Rp {estimasi_laba_bp:,.2f}**")
 
-        st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True, key="res_layak")
+        st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True)
         st.caption(f"💡 Keputusan: **{status_layak}**")
 
 # --- FOOTER COPYRIGHT ---
