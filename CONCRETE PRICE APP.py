@@ -11,22 +11,43 @@ st.set_page_config(
 # Judul Utama
 st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 15px;'>🏗️ KALKULATOR & EVALUASI PENAWARAN PROYEK</h3>", unsafe_allow_html=True)
 
-# --- PANEL ACUAN DI BAGIAN ATAS (RINGKAS & TIDAK PANJANG KE BAWAH) ---
+# Helper untuk membersihkan input string berformat ke float
+def parse_num(val, default=0.0):
+    try:
+        cleaned = str(val).replace(".", "").replace(",", "")
+        return float(cleaned)
+    except:
+        return default
+
+# --- PANEL ACUAN DI BAGIAN ATAS DENGAN KETERANGAN DI BAWAH MASING-MASING INPUT ---
 with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
     ac1, ac2 = st.columns(2, gap="medium")
     with ac1:
-        cap_prod = st.number_input("Kapasitas Produksi [m³] (Kode: a)", value=7392.0, step=100.0, format="%.2f")
-        biaya_cogm = st.number_input("Biaya COGM [Rp/m³] (Kode: b)", value=1095193.0, step=1000.0, format="%.2f")
-        upah_langsung = st.number_input("Biaya Upah Langsung [Rp/m³] (Kode: c)", value=21831.0, step=100.0, format="%.2f")
+        raw_cap = st.text_input("Kapasitas Produksi [m³] (Kode: a)", value="7.392")
+        cap_prod = parse_num(raw_cap, 7392.0)
+        st.caption(f"💡 Terbaca: **{cap_prod:,.2f} m³**")
+
+        raw_cogm = st.text_input("Biaya COGM [Rp/m³] (Kode: b)", value="1.095.193")
+        biaya_cogm = parse_num(raw_cogm, 1095193.0)
+        st.caption(f"💡 Terbaca: **Rp {biaya_cogm:,.2f}**")
+
+        raw_upah = st.text_input("Biaya Upah Langsung [Rp/m³] (Kode: c)", value="21.831")
+        upah_langsung = parse_num(raw_upah, 21831.0)
+        st.caption(f"💡 Terbaca: **Rp {upah_langsung:,.2f}**")
+
     with ac2:
-        bbm_alat = st.number_input("Biaya BBM Alat [Rp/m³] (Kode: d)", value=111386.0, step=100.0, format="%.2f")
-        fixed_cost = st.number_input("Total Biaya Tetap / Fixed Cost [Rp] (Kode: f)", value=668523832.0, step=1000000.0, format="%.2f")
+        raw_bbm = st.text_input("Biaya BBM Alat [Rp/m³] (Kode: d)", value="111.386")
+        bbm_alat = parse_num(raw_bbm, 111386.0)
+        st.caption(f"💡 Terbaca: **Rp {bbm_alat:,.2f}**")
+
+        raw_fc = st.text_input("Total Biaya Tetap / Fixed Cost [Rp] (Kode: f)", value="668.523.832")
+        fixed_cost = parse_num(raw_fc, 668523832.0)
+        st.caption(f"💡 Terbaca: **Rp {fixed_cost:,.2f}**")
 
     # Hitungan Parameter Acuan Sesuai Rumus Excel
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-    # Kotak ringkasan hasil hitung acuan
     st.markdown(f"""
     <div style="background-color: rgba(255, 75, 75, 0.04); border: 1px solid #ff4b4b; border-radius: 6px; padding: 10px 14px; margin-top: 8px; font-size: 0.9rem;">
         <b>Hasil Parameter Acuan:</b><br>
@@ -45,26 +66,18 @@ with col1:
     st.caption("Masukkan parameter order/penawaran baru")
     
     raw_harga = st.text_input("Harga Jual (h) [Rp/m³]", value="1.300.000")
-    try:
-        harga_jual = float(raw_harga.replace(".", "").replace(",", ""))
-        st.caption(f"✅ Terbaca: Rp {harga_jual:,.2f}")
-    except:
-        harga_jual = 1300000.0
+    harga_jual = parse_num(raw_harga, 1300000.0)
+    st.caption(f"💡 Terbaca: **Rp {harga_jual:,.2f}** per m³")
 
     raw_vol = st.text_input("Rencana Volume (i) [m³]", value="1.000")
-    try:
-        rencana_vol = float(raw_vol.replace(".", "").replace(",", ""))
-        st.caption(f"✅ Terbaca: {rencana_vol:,.2f} m³")
-    except:
-        rencana_vol = 1000.0
+    rencana_vol = parse_num(raw_vol, 1000.0)
+    st.caption(f"💡 Terbaca: **{rencana_vol:,.2f} m³**")
 
     mutu_beton = st.text_input("Mutu Beton Rencana", value="K250 Slump 12 ± 2")
     
     raw_jarak = st.text_input("Jarak Proyek dari Batching Plant [Km]", value="20")
-    try:
-        jarak_proyek = float(raw_jarak.replace(".", "").replace(",", ""))
-    except:
-        jarak_proyek = 20.0
+    jarak_proyek = parse_num(raw_jarak, 20.0)
+    st.caption(f"💡 Terbaca: **{jarak_proyek:,.2f} Km**")
 
 with col2:
     st.markdown("### 📊 Hasil Evaluasi & Kelayakan")
