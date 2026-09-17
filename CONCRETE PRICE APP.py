@@ -8,18 +8,54 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# --- CSS CUSTOM: BACKGROUND GAMBAR & KOTAK LOGIN TRANSPARAN ---
+st.markdown("""
+    <style>
+        /* Menggunakan file BG APP.jpeg yang sudah di-upload */
+        .stApp {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+                              url("https://raw.githubusercontent.com/Angniecoy/concrete-price-app/main/BG%20APP.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        /* Mempercantik Kotak Login agar kontras di atas background */
+        .login-card {
+            background-color: rgba(15, 23, 42, 0.85);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 10px;
+        }
+        .stTabs [data-baseweb="tab"] {
+            background-color: rgba(255, 75, 75, 0.15);
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
+            color: white;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # --- SISTEM KEAMANAN (PASSWORD GATEWAY) ---
-PASSWORD_BENAR = "2026"  # Password telah diset ke 2026
+PASSWORD_BENAR = "2026"  
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
     st.markdown("<br><br>", unsafe_allow_html=True)
-    col_lock1, col_lock2, col_lock3 = st.columns([1, 1.2, 1])
+    col_lock1, col_lock2, col_lock3 = st.columns([1, 1.3, 1])
     with col_lock2:
-        st.markdown("<h2 style='text-align: center; color: #1E3A8A;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
-        st.caption("Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.")
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: center; color: #FFFFFF;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; color: #D1D5DB; font-size: 0.9rem;'>Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.</p>", unsafe_allow_html=True)
         
         input_pass = st.text_input("Password", type="password", placeholder="Masukkan password...")
         
@@ -29,45 +65,28 @@ if not st.session_state.authenticated:
                 st.rerun()
             else:
                 st.error("❌ Password salah! Silakan coba lagi.")
-    st.stop()  # Menghentikan eksekusi kode di bawah jika belum login
+        st.markdown('</div>', unsafe_allow_html=True)
+    st.stop()
 
 # ==========================================
 # KODE UTAMA APLIKASI (HANYA MUNCUL SETELAH LOGIN)
 # ==========================================
 
-# Custom CSS untuk mempercantik tampilan tab, kontras warna, dan footer
-st.markdown("""
-    <style>
-        .stTabs [data-baseweb="tab-list"] {
-            gap: 10px;
-        }
-        .stTabs [data-baseweb="tab"] {
-            background-color: rgba(255, 75, 75, 0.08);
-            border-radius: 6px;
-            padding: 10px 20px;
-            font-weight: 600;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Tombol Logout di Sidebar jika ingin keluar
 with st.sidebar:
     st.markdown("### 🔒 Keamanan Akun")
     if st.button("Keluar (Logout)", use_container_width=True):
         st.session_state.authenticated = False
         st.rerun()
 
-# Judul Utama
 st.markdown("""
     <div style="text-align: center; padding: 10px 0px 20px 0px;">
         <span style="font-size: 1.8rem; vertical-align: middle;">🏗️</span>
-        <span style="font-size: 1.5rem; font-weight: 700; color: #F3F4F6; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px;">
+        <span style="font-size: 1.5rem; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
             KALKULATOR & EVALUASI PENAWARAN PROYEK
         </span>
     </div>
 """, unsafe_allow_html=True)
 
-# Helper untuk membersihkan input string berformat ke float
 def parse_num(val, default=0.0):
     try:
         cleaned = str(val).replace(".", "").replace(",", "")
@@ -75,10 +94,8 @@ def parse_num(val, default=0.0):
     except:
         return default
 
-# --- MEMBUAT NAVIGASI TAB UTAMA ---
 tab1, tab2 = st.tabs(["📋 Evaluasi Penawaran Proyek", "⚙️ Parameter & Acuan Batching Plant"])
 
-# --- TAB 2: PARAMETER & ACUAN BATCHING PLANT ---
 with tab2:
     st.markdown("#### ⚙️ Pengaturan Parameter Acuan Bulanan")
     st.caption("Ubah parameter acuan dasar batching plant di sini jika ada pembaruan berkala.")
@@ -106,7 +123,6 @@ with tab2:
         fixed_cost = parse_num(raw_fc, 668523832.0)
         st.caption(f"💡 Terbaca: **Rp {fixed_cost:,.2f}**")
 
-    # Hitungan Parameter Acuan Sesuai Rumus Excel
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
@@ -118,12 +134,9 @@ with tab2:
     st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"{g_fixed_satuan:,.2f}", disabled=True)
     st.caption(f"💡 Terbaca: **Rp {g_fixed_satuan:,.2f}** per m³")
 
-# Hitung nilai acuan untuk digunakan di Tab 1 juga
 e_var = biaya_cogm - upah_langsung - bbm_alat
 g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-
-# --- TAB 1: EVALUASI PENAWARAN PROYEK (MENU UTAMA) ---
 with tab1:
     col1, col2 = st.columns([1, 1], gap="large")
 
@@ -148,7 +161,6 @@ with tab1:
     with col2:
         st.markdown("#### 📊 Hasil Evaluasi & Kelayakan")
         
-        # Perhitungan Formula Excel 100% Presisi
         j_margin = harga_jual - e_var
         k_proporsional = (fixed_cost / cap_prod) * rencana_vol if cap_prod > 0 else 0
         l_bep_vol = fixed_cost / j_margin if j_margin > 0 else 0
@@ -157,7 +169,6 @@ with tab1:
         n_laba_prop = m_total_margin - k_proporsional
         estimasi_laba_bp = m_total_margin - fixed_cost
 
-        # Status Kelayakan
         if j_margin > 0:
             if n_laba_prop < 0:
                 status_layak = "🟡 Layak (Bantu Tutup Biaya Tetap)"
@@ -193,7 +204,7 @@ with tab1:
 # --- FOOTER COPYRIGHT ---
 st.markdown("---")
 st.markdown("""
-    <div style="text-align: center; color: #9CA3AF; font-size: 0.85rem; padding: 10px 0px 20px 0px;">
+    <div style="text-align: center; color: #FFFFFF; font-size: 0.85rem; padding: 10px 0px 20px 0px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
         © 2026 PT Waskita Beton Precast Tbk · Kalkulator Pasar Retail Pro v2.1 | Developed By RMQ Division
     </div>
 """, unsafe_allow_html=True)
