@@ -49,9 +49,11 @@ with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
     st.markdown("---")
-    # Menggunakan text_input disabled agar desainnya 100% sama persis dengan kolom input diatasnya
-    st.text_input("Biaya Variabel (e = b - c - d) [Rp/m³]", value=f"Rp {e_var:,.2f}", disabled=True)
-    st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"Rp {g_fixed_satuan:,.2f}", disabled=True)
+    st.text_input("Biaya Variabel (e = b - c - d) [Rp/m³]", value=f"{e_var:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {e_var:,.2f}** per m³")
+
+    st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"{g_fixed_satuan:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {g_fixed_satuan:,.2f}** per m³")
 
 st.markdown("---")
 
@@ -96,11 +98,26 @@ with col2:
     else:
         status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-    st.text_input("Margin Kontribusi (j = h - e) [Rp/m³]", value=f"Rp {j_margin:,.2f}", disabled=True)
-    st.text_input("Beban Biaya Tetap Proporsional (k = (f/a)*i) [Rp]", value=f"Rp {k_proporsional:,.2f}", disabled=True)
+    st.text_input("Margin Kontribusi (j = h - e) [Rp/m³]", value=f"{j_margin:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {j_margin:,.2f}** per m³")
+
+    st.text_input("Beban Biaya Tetap Proporsional (k = (f/a)*i) [Rp]", value=f"{k_proporsional:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {k_proporsional:,.2f}**")
+
     st.text_input("BEP Volume (l = f / j) [m³]", value=f"{l_bep_vol:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **{l_bep_vol:,.2f} m³**")
+
     st.text_input("Status Target Volume Proyek", value=status_vol, disabled=True)
-    st.text_input("Total Margin Kontribusi (m = i * j) [Rp]", value=f"Rp {m_total_margin:,.2f}", disabled=True)
-    st.text_input("Laba Operasi Proporsional Proyek (n = m - k) [Rp]", value=f"Rp {n_laba_prop:,.2f}", disabled=True)
-    st.text_input("Estimasi Laba Operasi Batching Plant (m - f) [Rp]", value=f"Rp {estimasi_laba_bp:,.2f}", disabled=True)
+    st.caption(f"💡 Status: **{status_vol}**")
+
+    st.text_input("Total Margin Kontribusi (m = i * j) [Rp]", value=f"{m_total_margin:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {m_total_margin:,.2f}**")
+
+    st.text_input("Laba Operasi Proporsional Proyek (n = m - k) [Rp]", value=f"{n_laba_prop:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {n_laba_prop:,.2f}**")
+
+    st.text_input("Estimasi Laba Operasi Batching Plant (m - f) [Rp]", value=f"{estimasi_laba_bp:,.2f}", disabled=True)
+    st.caption(f"💡 Terbaca: **Rp {estimasi_laba_bp:,.2f}**")
+
     st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True)
+    st.caption(f"💡 Keputusan: **{status_layak}**")
