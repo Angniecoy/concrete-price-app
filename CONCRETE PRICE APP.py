@@ -77,7 +77,7 @@ with col2:
 
 st.markdown("---")
 
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (PROPORSIONAL & RAPAT) ---
+# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (RAPAT & RECTANGLE MERAH) ---
 st.markdown("### 🧮 Rekapitulasi Finansial Akhir")
 
 bep_rupiah = l_bep_vol * harga_jual           
@@ -85,14 +85,29 @@ tot_biaya_var = e_var * l_bep_vol
 tot_biaya = tot_biaya_var + fixed_cost        
 cek_nol = tot_biaya - bep_rupiah              
 
-# Menggunakan container card agar rapi dan proporsional normal
-with st.container():
-    rcol1, rcol2 = st.columns(2, gap="large")
-    with rcol1:
-        st.markdown(f"**BEP Rupiah**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {bep_rupiah:,.2f}</span>", unsafe_allow_html=True)
-        st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
-        st.markdown(f"**Total Biaya Variabel**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {tot_biaya_var:,.2f}</span>", unsafe_allow_html=True)
-    with rcol2:
-        st.markdown(f"**Total Biaya**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {tot_biaya:,.2f}</span>", unsafe_allow_html=True)
-        st.markdown("<div style='margin-bottom: 12px;'></div>", unsafe_allow_html=True)
-        st.markdown(f"**Cek Harus 0**<br><span style='font-size: 1.25rem; font-weight: 600;'>Rp {cek_nol:,.2f}</span>", unsafe_allow_html=True)
+# Tampilan kotak dengan border/rectangle merah agar fokus & rapat di Android
+st.markdown(f"""
+<div style="
+    border: 2px solid #ff4b4b; 
+    border-radius: 8px; 
+    padding: 14px 18px; 
+    background-color: rgba(255, 75, 75, 0.03);
+">
+    <div style="margin-bottom: 10px;">
+        <span style="font-size: 0.85rem; color: #a1a1aa;">BEP Rupiah</span><br>
+        <span style="font-size: 1.15rem; font-weight: 700;">Rp {bep_rupiah:,.2f}</span>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <span style="font-size: 0.85rem; color: #a1a1aa;">Total Biaya Variabel</span><br>
+        <span style="font-size: 1.15rem; font-weight: 700;">Rp {tot_biaya_var:,.2f}</span>
+    </div>
+    <div style="margin-bottom: 10px;">
+        <span style="font-size: 0.85rem; color: #a1a1aa;">Total Biaya</span><br>
+        <span style="font-size: 1.15rem; font-weight: 700;">Rp {tot_biaya:,.2f}</span>
+    </div>
+    <div>
+        <span style="font-size: 0.85rem; color: #a1a1aa;">Cek Harus 0</span><br>
+        <span style="font-size: 1.15rem; font-weight: 700;">Rp {cek_nol:,.2f}</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
