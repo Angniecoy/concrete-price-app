@@ -8,7 +8,34 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS untuk mempercantik tampilan tab, kontras warna, dan footer copyright
+# --- SISTEM KEAMANAN (PASSWORD GATEWAY) ---
+PASSWORD_BENAR = "2026"  # Password telah diset ke 2026
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    col_lock1, col_lock2, col_lock3 = st.columns([1, 1.2, 1])
+    with col_lock2:
+        st.markdown("<h2 style='text-align: center; color: #1E3A8A;'>🔒 Autentikasi Masuk</h2>", unsafe_allow_html=True)
+        st.caption("Masukkan password internal untuk mengakses Kalkulator Pasar Retail Pro.")
+        
+        input_pass = st.text_input("Password", type="password", placeholder="Masukkan password...")
+        
+        if st.button("Masuk Aplikasi", use_container_width=True):
+            if input_pass == PASSWORD_BENAR:
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("❌ Password salah! Silakan coba lagi.")
+    st.stop()  # Menghentikan eksekusi kode di bawah jika belum login
+
+# ==========================================
+# KODE UTAMA APLIKASI (HANYA MUNCUL SETELAH LOGIN)
+# ==========================================
+
+# Custom CSS untuk mempercantik tampilan tab, kontras warna, dan footer
 st.markdown("""
     <style>
         .stTabs [data-baseweb="tab-list"] {
@@ -23,7 +50,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Judul Utama yang Lebih Terang, Kontras, dan Elegan di Layar Gelap
+# Tombol Logout di Sidebar jika ingin keluar
+with st.sidebar:
+    st.markdown("### 🔒 Keamanan Akun")
+    if st.button("Keluar (Logout)", use_container_width=True):
+        st.session_state.authenticated = False
+        st.rerun()
+
+# Judul Utama
 st.markdown("""
     <div style="text-align: center; padding: 10px 0px 20px 0px;">
         <span style="font-size: 1.8rem; vertical-align: middle;">🏗️</span>
@@ -156,7 +190,7 @@ with tab1:
         st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True, key="res_layak")
         st.caption(f"💡 Keputusan: **{status_layak}**")
 
-# --- FOOTER COPYRIGHT (BAGIAN BAWAH APLIKASI) ---
+# --- FOOTER COPYRIGHT ---
 st.markdown("---")
 st.markdown("""
     <div style="text-align: center; color: #9CA3AF; font-size: 0.85rem; padding: 10px 0px 20px 0px;">
