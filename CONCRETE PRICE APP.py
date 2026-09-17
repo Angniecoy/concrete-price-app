@@ -19,23 +19,7 @@ def parse_num(val, default=0.0):
     except:
         return default
 
-# Helper function untuk membuat kotak nilai (rectangle merah tipis)
-def render_box(title, value):
-    st.markdown(f"""
-    <div style="margin-bottom: 8px;">
-        <div style="font-size: 0.85rem; font-weight: 600; color: #d1d5db; margin-bottom: 2px;">{title}</div>
-        <div style="
-            border: 1.5px solid #ff4b4b; 
-            border-radius: 6px; 
-            padding: 6px 12px; 
-            background-color: rgba(255, 75, 75, 0.04);
-            font-size: 1.05rem;
-            font-weight: 700;
-        ">{value}</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-# --- PANEL ACUAN DI BAGIAN ATAS DENGAN KOTAK RECTANGLE ---
+# --- PANEL ACUAN DI BAGIAN ATAS ---
 with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
     ac1, ac2 = st.columns(2, gap="medium")
     with ac1:
@@ -65,8 +49,9 @@ with st.expander("📌 Acuan Biaya Batching Plant (Parameter Bulanan)", expanded
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
     st.markdown("---")
-    render_box("Biaya Variabel (e = b - c - d):", f"Rp {e_var:,.2f} /m³")
-    render_box("Biaya Tetap Satuan (g = f / a):", f"Rp {g_fixed_satuan:,.2f} /m³")
+    # Menggunakan text_input disabled agar desainnya 100% sama persis dengan kolom input diatasnya
+    st.text_input("Biaya Variabel (e = b - c - d) [Rp/m³]", value=f"Rp {e_var:,.2f}", disabled=True)
+    st.text_input("Biaya Tetap Satuan (g = f / a) [Rp/m³]", value=f"Rp {g_fixed_satuan:,.2f}", disabled=True)
 
 st.markdown("---")
 
@@ -111,11 +96,11 @@ with col2:
     else:
         status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-    render_box("Margin Kontribusi (j = h - e):", f"Rp {j_margin:,.2f} /m³")
-    render_box("Beban Biaya Tetap Proporsional (k = (f/a)*i):", f"Rp {k_proporsional:,.2f}")
-    render_box("BEP Volume (l = f / j):", f"{l_bep_vol:,.2f} m³")
-    render_box("Status Target Volume Proyek:", status_vol)
-    render_box("Total Margin Kontribusi (m = i * j):", f"Rp {m_total_margin:,.2f}")
-    render_box("Laba Operasi Proporsional Proyek (n = m - k):", f"Rp {n_laba_prop:,.2f}")
-    render_box("Estimasi Laba Operasi Batching Plant (m - f):", f"Rp {estimasi_laba_bp:,.2f}")
-    render_box("Status Kelayakan Harga Proyek:", status_layak)
+    st.text_input("Margin Kontribusi (j = h - e) [Rp/m³]", value=f"Rp {j_margin:,.2f}", disabled=True)
+    st.text_input("Beban Biaya Tetap Proporsional (k = (f/a)*i) [Rp]", value=f"Rp {k_proporsional:,.2f}", disabled=True)
+    st.text_input("BEP Volume (l = f / j) [m³]", value=f"{l_bep_vol:,.2f}", disabled=True)
+    st.text_input("Status Target Volume Proyek", value=status_vol, disabled=True)
+    st.text_input("Total Margin Kontribusi (m = i * j) [Rp]", value=f"Rp {m_total_margin:,.2f}", disabled=True)
+    st.text_input("Laba Operasi Proporsional Proyek (n = m - k) [Rp]", value=f"Rp {n_laba_prop:,.2f}", disabled=True)
+    st.text_input("Estimasi Laba Operasi Batching Plant (m - f) [Rp]", value=f"Rp {estimasi_laba_bp:,.2f}", disabled=True)
+    st.text_input("Status Kelayakan Harga Proyek", value=status_layak, disabled=True)
