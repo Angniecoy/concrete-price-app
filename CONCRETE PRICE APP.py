@@ -63,21 +63,34 @@ with col2:
     else:
         status_layak = "🔴 Tidak Layak (Harga Jual < Biaya Var)"
 
-    st.markdown(f"""
-    - **Margin Kontribusi (j):** `Rp {j_margin:,.2f} /m³`
-    - **Beban Tetap Proporsional (k):** `Rp {k_proporsional:,.2f}`
-    - **BEP Volume (l):** `{l_bep_vol:,.2f} m³`
-    - **Status Target Volume:** `{status_vol}`
-    - **Total Margin Kontribusi (m):** `Rp {m_total_margin:,.2f}`
-    - **Laba Operasi Proporsional (n):** `Rp {n_laba_prop:,.2f}`
-    - **Estimasi Laba Operasi BP:** `Rp {estimasi_laba_bp:,.2f}`
-    """)
+    # Helper function untuk membuat kotak nilai (rectangle merah tipis)
+    def render_box(title, value):
+        st.markdown(f"""
+        <div style="margin-bottom: 8px;">
+            <div style="font-size: 0.85rem; font-weight: 600; color: #d1d5db; margin-bottom: 2px;">{title}</div>
+            <div style="
+                border: 1.5px solid #ff4b4b; 
+                border-radius: 6px; 
+                padding: 6px 12px; 
+                background-color: rgba(255, 75, 75, 0.04);
+                font-size: 1.05rem;
+                font-weight: 700;
+            ">{value}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown(f"**Status Kelayakan:** {status_layak}")
+    render_box("Margin Kontribusi (j = h - e):", f"Rp {j_margin:,.2f} /m³")
+    render_box("Beban Biaya Tetap Proporsional (k = (f/a)*i):", f"Rp {k_proporsional:,.2f}")
+    render_box("BEP Volume (l = f / j):", f"{l_bep_vol:,.2f} m³")
+    render_box("Status Target Volume Proyek:", status_vol)
+    render_box("Total Margin Kontribusi (m = i * j):", f"Rp {m_total_margin:,.2f}")
+    render_box("Laba Operasi Proporsional Proyek (n = m - k):", f"Rp {n_laba_prop:,.2f}")
+    render_box("Estimasi Laba Operasi Batching Plant (m - f):", f"Rp {estimasi_laba_bp:,.2f}")
+    render_box("Status Kelayakan Harga Proyek:", status_layak)
 
 st.markdown("---")
 
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (RAPAT & RECTANGLE MERAH) ---
+# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR ---
 st.markdown("### 🧮 Rekapitulasi Finansial Akhir")
 
 bep_rupiah = l_bep_vol * harga_jual           
@@ -85,29 +98,7 @@ tot_biaya_var = e_var * l_bep_vol
 tot_biaya = tot_biaya_var + fixed_cost        
 cek_nol = tot_biaya - bep_rupiah              
 
-# Tampilan kotak dengan border/rectangle merah agar fokus & rapat di Android
-st.markdown(f"""
-<div style="
-    border: 2px solid #ff4b4b; 
-    border-radius: 8px; 
-    padding: 14px 18px; 
-    background-color: rgba(255, 75, 75, 0.03);
-">
-    <div style="margin-bottom: 10px;">
-        <span style="font-size: 0.85rem; color: #a1a1aa;">BEP Rupiah</span><br>
-        <span style="font-size: 1.15rem; font-weight: 700;">Rp {bep_rupiah:,.2f}</span>
-    </div>
-    <div style="margin-bottom: 10px;">
-        <span style="font-size: 0.85rem; color: #a1a1aa;">Total Biaya Variabel</span><br>
-        <span style="font-size: 1.15rem; font-weight: 700;">Rp {tot_biaya_var:,.2f}</span>
-    </div>
-    <div style="margin-bottom: 10px;">
-        <span style="font-size: 0.85rem; color: #a1a1aa;">Total Biaya</span><br>
-        <span style="font-size: 1.15rem; font-weight: 700;">Rp {tot_biaya:,.2f}</span>
-    </div>
-    <div>
-        <span style="font-size: 0.85rem; color: #a1a1aa;">Cek Harus 0</span><br>
-        <span style="font-size: 1.15rem; font-weight: 700;">Rp {cek_nol:,.2f}</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+render_box("BEP Rupiah (f = BEP Vol * Harga Jual):", f"Rp {bep_rupiah:,.2f}")
+render_box("Total Biaya Variabel (g = Biaya Var * BEP Vol):", f"Rp {tot_biaya_var:,.2f}")
+render_box("Total Biaya (h = Total Biaya Variabel + Fixed Cost):", f"Rp {tot_biaya:,.2f}")
+render_box("Cek Harus 0 (i = f - h):", f"Rp {cek_nol:,.2f}")
