@@ -14,7 +14,6 @@ st.markdown("<h3 style='text-align: center; color: #1E3A8A; margin-bottom: 15px;
 
 # --- PANEL ACUAN DI BAGIAN PALING ATAS (KETERANGAN TABEL) ---
 with st.expander("📌 Lihat / Ubah Acuan Biaya Batching Plant (Parameter Bulanan)", expanded=True):
-    # Form input acuan dalam bentuk kolom agar rapi di HP maupun PC
     ac1, ac2, ac3 = st.columns(3, gap="medium")
     with ac1:
         cap_prod = st.number_input("Kapasitas Produksi (a) [m³]", value=7392.0, step=100.0, format="%.2f")
@@ -29,7 +28,6 @@ with st.expander("📌 Lihat / Ubah Acuan Biaya Batching Plant (Parameter Bulana
     e_var = biaya_cogm - upah_langsung - bbm_alat
     g_fixed_satuan = fixed_cost / cap_prod if cap_prod > 0 else 0
 
-    # Menampilkan Tabel Keterangan Persis Seperti Gambar Anda
     st.markdown("<br>", unsafe_allow_html=True)
     tabel_data = pd.DataFrame([
         {"Uraian": "Kapasitas Produksi", "Sat.": "m³", "Kode": "a", "Nilai": f"{cap_prod:,.2f}"},
@@ -116,17 +114,3 @@ with col2:
     render_box("Laba Operasi Proporsional Proyek (n = m - k):", f"Rp {n_laba_prop:,.2f}")
     render_box("Estimasi Laba Operasi Batching Plant (m - f):", f"Rp {estimasi_laba_bp:,.2f}")
     render_box("Status Kelayakan Harga Proyek:", status_layak)
-
-st.markdown("---")
-
-# --- BAGIAN BAWAH: REKAPITULASI FINANSIAL AKHIR (EXPANDER) ---
-bep_rupiah = l_bep_vol * harga_jual           
-tot_biaya_var = e_var * l_bep_vol             
-tot_biaya = tot_biaya_var + fixed_cost        
-cek_nol = tot_biaya - bep_rupiah              
-
-with st.expander("🧮 Klik untuk Melihat Rekapitulasi Finansial Akhir"):
-    render_box("BEP Rupiah:", f"Rp {bep_rupiah:,.2f}")
-    render_box("Total Biaya Variabel:", f"Rp {tot_biaya_var:,.2f}")
-    render_box("Total Biaya:", f"Rp {tot_biaya:,.2f}")
-    render_box("Cek Harus 0:", f"Rp {cek_nol:,.2f}")
